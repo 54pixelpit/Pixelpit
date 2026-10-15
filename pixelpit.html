@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PixelPit — Your Personal Arcade</title>
+<style>
+:root{--bg:#0a0b12;--panel:#121522;--panel2:#191e30;--line:#292f45;--text:#f4f5ff;--muted:#a1a8c2;--purple:#9b7bff;--cyan:#59e1e8;--pink:#ff6bd6}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#241a48 0,transparent 35%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+header{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:22px;padding:14px clamp(14px,4vw,48px);background:#0a0b12eF;border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+.logo{font-size:23px;font-weight:900;letter-spacing:-1px;white-space:nowrap}.logo span{color:var(--purple)}nav{display:flex;gap:8px;flex:1}button,.navbtn{border:1px solid transparent;background:transparent;color:var(--muted);padding:9px 13px;border-radius:10px;cursor:pointer;font:inherit}.navbtn.active,.navbtn:hover{color:white;background:var(--panel2);border-color:var(--line)}.search{width:min(240px,32vw);background:var(--panel);border:1px solid var(--line);color:white;padding:10px 12px;border-radius:10px}
+main{max-width:1150px;margin:auto;padding:28px clamp(14px,4vw,48px) 60px}.hero{position:relative;overflow:hidden;border:1px solid #39305c;border-radius:22px;padding:clamp(24px,5vw,54px);background:linear-gradient(110deg,#211b3e,#111626 65%,#152c3a);min-height:260px}.hero:after{content:"";position:absolute;width:260px;height:260px;right:7%;top:8px;border:1px solid #9b7bff50;border-radius:35%;transform:rotate(35deg);box-shadow:0 0 0 24px #9b7bff0d,0 0 0 55px #59e1e80a}.eyebrow{color:var(--cyan);font-weight:800;text-transform:uppercase;letter-spacing:2px;font-size:12px}.hero h1{font-size:clamp(35px,6vw,62px);line-height:1.02;letter-spacing:-2px;margin:13px 0;max-width:590px}.hero p{color:#c5c8dc;max-width:520px}.primary{background:linear-gradient(100deg,var(--purple),#7664ff);color:white;font-weight:800;border:0;padding:12px 18px;margin-top:8px}.primary:hover{filter:brightness(1.1)}.sectionhead{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:32px 0 14px}.sectionhead h2{margin:0;font-size:22px}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.gamecard{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer;transition:.18s}.gamecard:hover{transform:translateY(-3px);border-color:#7766c9}.art{height:125px;display:flex;align-items:center;justify-content:center;font-size:45px;position:relative;overflow:hidden;background:linear-gradient(135deg,#27204c,#153b4c)}.art:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#ffffff09 1px,transparent 1px),linear-gradient(90deg,#ffffff09 1px,transparent 1px);background-size:18px 18px}.art span{z-index:1;filter:drop-shadow(0 5px 8px #0008)}.art.pink{background:linear-gradient(135deg,#4a214c,#211c42)}.art.green{background:linear-gradient(135deg,#163d3b,#1c2544)}.art.orange{background:linear-gradient(135deg,#4a3021,#302044)}.cardbody{padding:14px}.cardbody h3{margin:0 0 4px}.tag{display:inline-block;border:1px solid #343c57;color:#c4c8df;padding:3px 8px;border-radius:20px;font-size:11px;margin-top:9px}.view{display:none}.view.active{display:block}.gamepanel{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.gamebar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}.gamebar h2{margin:0}.gamecanvaswrap{background:#080b14;border:1px solid #333954;border-radius:12px;overflow:hidden}.gamecanvaswrap canvas{display:block;width:100%;height:auto;image-rendering:pixelated;touch-action:none}.controls{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}.controlkeys{display:flex;gap:8px}.keybtn{background:#242940;border:1px solid #424b6c;color:white;min-width:48px;font-weight:800}.notice{padding:13px 15px;background:#171a28;border:1px solid var(--line);border-radius:12px;color:var(--muted);margin-top:20px;font-size:13px}.proxybox{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}.proxybox input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:#090c15;color:white;margin:8px 0}.proxybox .primary{margin-top:4px}.empty{display:none;padding:24px;color:var(--muted);text-align:center}.footer{border-top:1px solid var(--line);padding-top:20px;margin-top:36px;color:#7f86a2;font-size:12px}
+@media(max-width:760px){header{flex-wrap:wrap;gap:10px}nav{order:3;width:100%;flex-basis:100%;overflow:auto}.search{margin-left:auto}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero:after{right:-110px;opacity:.6}.hero{min-height:290px}}
+@media(max-width:470px){.grid{grid-template-columns:1fr}.art{height:110px}.search{width:46vw}.logo{font-size:21px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">PIXEL<span>PIT</span></div>
+  <nav aria-label="Main navigation">
+    <button class="navbtn active" data-view="home">Home</button>
+    <button class="navbtn" data-view="games">Games</button>
+    <button class="navbtn" data-view="play">Play now</button>
+    <button class="navbtn" data-view="links">Web links</button>
+  </nav>
+  <input class="search" id="search" placeholder="Search games…" aria-label="Search games">
+</header>
+<main>
+  <section id="home" class="view active">
+    <div class="hero">
+      <div class="eyebrow">◆ Your personal arcade</div>
+      <h1>Jump in.<br>Level up.</h1>
+      <p>A neon-lit corner of the internet for platformers, arcade challenges, and your next high score.</p>
+      <button class="primary" data-goto="play">▶ PLAY PIXEL JUMPER</button>
+    </div>
+    <div class="sectionhead"><div><div class="eyebrow">START HERE</div><h2>Featured games</h2></div><button data-goto="games">View all →</button></div>
+    <div class="grid" id="featured"></div>
+  </section>
+  <section id="games" class="view">
+    <div class="sectionhead"><div><div class="eyebrow">THE ARCADE</div><h2>Game library</h2><div class="muted">Choose a game to launch it.</div></div></div>
+    <div class="grid" id="library"></div><div class="empty" id="empty">No games match that search.</div>
+  </section>
+  <section id="play" class="view">
+    <div class="sectionhead"><div><div class="eyebrow">NOW PLAYING</div><h2>Pixel Jumper</h2><div class="muted">Collect the glowing gems and avoid the gaps.</div></div></div>
+    <div class="gamepanel">
+      <div class="gamebar"><h2>🟪 Pixel Jumper</h2><span class="muted" id="status">Gems: 0 · Lives: 3</span><button id="restart">↻ Restart</button></div>
+      <div class="gamecanvaswrap"><canvas id="game" width="800" height="400" aria-label="Pixel Jumper game area"></canvas></div>
+      <div class="controls"><span class="muted">Keyboard: ← → or A/D to move · Space / ↑ to jump</span><div class="controlkeys"><button class="keybtn" id="left">←</button><button class="keybtn" id="jump">↑ JUMP</button><button class="keybtn" id="right">→</button></div></div>
+      <p class="muted">Tip: Land on the platforms and grab the cyan gems. Reach the green portal to win!</p>
+    </div>
+  </section>
+  <section id="links" class="view">
+    <div class="sectionhead"><div><div class="eyebrow">QUICK ACCESS</div><h2>Web links</h2></div></div>
+    <div class="proxybox">
+      <h3>Open a website</h3>
+      <p class="muted">Enter a web address to open it in a new tab. This is a shortcut launcher, not a network proxy or school-filter bypass.</p>
+      <form id="urlform"><input id="urlinput" placeholder="https://example.com" aria-label="Website address"><button class="primary" type="submit">Open website ↗</button></form>
+      <div class="sectionhead"><h2>Useful links</h2></div>
+      <div class="grid">
+        <div class="gamecard" data-url="https://itch.io/games"><div class="art green"><span>🕹️</span></div><div class="cardbody"><h3>itch.io Games</h3><div class="muted">Indie games and projects</div></div></div>
+        <div class="gamecard" data-url="https://developer.mozilla.org/"><div class="art"><span>💻</span></div><div class="cardbody"><h3>Learn Web Dev</h3><div class="muted">Build your own games</div></div></div>
+        <div class="gamecard" data-url="https://www.wikipedia.org/"><div class="art pink"><span>🌐</span></div><div class="cardbody"><h3>Wikipedia</h3><div class="muted">Explore and learn</div></div></div>
+      </div>
+    </div>
+  </section>
+  <div class="notice">PixelPit is a starter project. The built-in Pixel Jumper game runs locally in this page. External games and websites need internet access and may be unavailable on some networks.</div>
+  <div class="footer">PIXELPIT © 2026 · Built for the love of games. Play fair, take breaks, and keep creating.</div>
+</main>
+<script>
+const games=[
+ {name:"Pixel Jumper",desc:"Leap across platforms and collect gems.",emoji:"🟪",tag:"Platformer",color:""},
+ {name:"Neon Dash",desc:"A fast-paced obstacle-dodging concept.",emoji:"⚡",tag:"Runner",color:"pink"},
+ {name:"Cave Quest",desc:"Explore mysterious pixel caves.",emoji:"💎",tag:"Adventure",color:"green"},
+ {name:"Sky Hop",desc:"Hop between floating platforms.",emoji:"☁️",tag:"Platformer",color:""},
+ {name:"Lava Escape",desc:"Find your way past the glowing lava.",emoji:"🌋",tag:"Arcade",color:"orange"},
+ {name:"Star Collector",desc:"A tiny cosmic treasure hunt.",emoji:"🌟",tag:"Casual",color:"pink"}
+];
+const card=(g)=>`<article class="gamecard" data-game="${g.name}"><div class="art ${g.color}"><span>${g.emoji}</span></div><div class="cardbody"><h3>${g.name}</h3><div class="muted">${g.desc}</div><span class="tag">${g.tag}</span></div></article>`;
+document.querySelector('#featured').innerHTML=games.slice(0,3).map(card).join('');
+document.querySelector('#library').innerHTML=games.map(card).join('');
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.view===id));if(id==='play')startLoop();window.scrollTo({top:0,behavior:'smooth'});}
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));
+document.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>showView(b.dataset.goto));
+document.addEventListener('click',e=>{const g=e.target.closest('[data-game]');if(g){showView('play');resetGame()}const link=e.target.closest('[data-url]');if(link)window.open(link.dataset.url,'_blank','noopener,noreferrer')});
+document.querySelector('#search').addEventListener('input',e=>{const q=e.target.value.toLowerCase();let count=0;document.querySelectorAll('#library [data-game]').forEach(c=>{const show=c.textContent.toLowerCase().includes(q);c.style.display=show?'':'none';if(show)count++});document.querySelector('#empty').style.display=count?'none':'block';if(q)showView('games')});
+document.querySelector('#urlform').addEventListener('submit',e=>{e.preventDefault();let raw=document.querySelector('#urlinput').value.trim();if(!raw)return;if(!/^https?:\/\//i.test(raw))raw='https://'+raw;try{const u=new URL(raw);if(!['http:','https:'].includes(u.protocol))throw 0;window.open(u.href,'_blank','noopener,noreferrer')}catch{alert('Please enter a valid http or https web address.')}});
+const canvas=document.querySelector('#game'),ctx=canvas.getContext('2d');let keys={},player,platforms,gems,portal,score,lives,won,loopStarted=false,raf,last=0;
+function resetGame(){player={x:40,y:290,w:23,h:28,vx:0,vy:0,on:false};platforms=[{x:0,y:350,w:800,h:50},{x:115,y:300,w:110,h:13},{x:270,y:250,w:110,h:13},{x:420,y:200,w:105,h:13},{x:575,y:260,w:95,h:13},{x:670,y:175,w:90,h:13}];gems=[{x:160,y:270,taken:false},{x:315,y:220,taken:false},{x:462,y:170,taken:false},{x:620,y:230,taken:false},{x:710,y:145,taken:false}];portal={x:740,y:125,w:26,h:48};score=0;lives=3;won=false;updateStatus();draw()}
+function updateStatus(){document.querySelector('#status').textContent=`Gems: ${score} · Lives: ${lives}${won?' · YOU WIN!':''}`}
+function draw(){ctx.clearRect(0,0,800,400);let grad=ctx.createLinearGradient(0,0,0,400);grad.addColorStop(0,'#11162b');grad.addColorStop(1,'#080b14');ctx.fillStyle=grad;ctx.fillRect(0,0,800,400);ctx.fillStyle='#ffffff';for(let i=0;i<55;i++){let x=(i*137)%800,y=(i*71)%330;ctx.globalAlpha=.2+(i%4)*.15;ctx.fillRect(x,y,2,2)}ctx.globalAlpha=1;
+platforms.forEach(p=>{ctx.fillStyle='#242b48';ctx.fillRect(p.x,p.y,p.w,p.h);ctx.fillStyle='#9b7bff';ctx.fillRect(p.x,p.y,p.w,3);ctx.fillStyle='#454f77';ctx.fillRect(p.x,p.y+p.h-3,p.w,3)});
+gems.forEach(g=>{if(g.taken)return;ctx.save();ctx.translate(g.x,g.y);ctx.rotate(Math.PI/4);ctx.fillStyle='#59e1e8';ctx.shadowColor='#59e1e8';ctx.shadowBlur=13;ctx.fillRect(-6,-6,12,12);ctx.restore();ctx.shadowBlur=0});
+ctx.fillStyle='#5cf2a5';ctx.shadowColor='#5cf2a5';ctx.shadowBlur=15;ctx.fillRect(portal.x,portal.y,portal.w,portal.h);ctx.fillStyle='#153f38';ctx.fillRect(portal.x+7,portal.y+7,12,34);ctx.shadowBlur=0;
+ctx.fillStyle='#b49aff';ctx.fillRect(player.x,player.y,player.w,player.h);ctx.fillStyle='#fff';ctx.fillRect(player.x+5,player.y+6,4,4);ctx.fillRect(player.x+15,player.y+6,4,4);ctx.fillStyle='#6650bb';ctx.fillRect(player.x+4,player.y+20,15,4);
+if(won||lives<=0){ctx.fillStyle='#050712cc';ctx.fillRect(0,0,800,400);ctx.textAlign='center';ctx.fillStyle=won?'#5cf2a5':'#ff8a9b';ctx.font='bold 34px system-ui';ctx.fillText(won?'LEVEL COMPLETE!':'TRY AGAIN',400,185);ctx.font='17px system-ui';ctx.fillStyle='#fff';ctx.fillText(won?'You found the portal. Nice run!':'Press Restart to try again.',400,220);ctx.textAlign='left'}}
+function update(dt){if(won||lives<=0)return;const speed=230;player.vx=(keys.ArrowLeft||keys.a||keys.A?-speed:0)+(keys.ArrowRight||keys.d||keys.D?speed:0);if((keys[' ']||keys.ArrowUp||keys.w||keys.W)&&player.on){player.vy=-450;player.on=false}player.x+=player.vx*dt;player.x=Math.max(0,Math.min(800-player.w,player.x));player.vy+=1050*dt;player.y+=player.vy*dt;player.on=false;for(const p of platforms){if(player.vy>=0&&player.x+player.w>p.x&&player.x<p.x+p.w&&player.y+player.h>=p.y&&player.y+player.h<=p.y+p.h+Math.max(8,player.vy*dt)){player.y=p.y-player.h;player.vy=0;player.on=true}}
+for(const g of gems){if(!g.taken&&Math.abs(player.x+player.w/2-g.x)<19&&Math.abs(player.y+player.h/2-g.y)<22){g.taken=true;score++;updateStatus()}}
+if(player.y>430){lives--;updateStatus();if(lives>0){player.x=35;player.y=285;player.vy=0}else draw()}
+if(player.x+player.w>portal.x&&player.x<portal.x+portal.w&&player.y+player.h>portal.y&&player.y<portal.y+portal.h){won=true;updateStatus()}}
+function frame(t){if(!loopStarted)return;const dt=Math.min((t-last)/1000||0,0.033);last=t;update(dt);draw();raf=requestAnimationFrame(frame)}
+function startLoop(){if(loopStarted)return;loopStarted=true;last=0;raf=requestAnimationFrame(frame)}
+document.querySelector('#restart').onclick=resetGame;document.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','ArrowUp',' '].includes(e.key))e.preventDefault();keys[e.key]=true;if(e.key==='r'||e.key==='R')resetGame()});document.addEventListener('keyup',e=>keys[e.key]=false);
+function hold(id,key){const b=document.getElementById(id);const on=e=>{e.preventDefault();keys[key]=true};const off=e=>{e.preventDefault();keys[key]=false};b.addEventListener('pointerdown',on);['pointerup','pointercancel','pointerleave'].forEach(ev=>b.addEventListener(ev,off))}
+hold('left','ArrowLeft');hold('right','ArrowRight');hold('jump',' ');resetGame();
+</script>
+</body>
+</html>
